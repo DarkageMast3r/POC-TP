@@ -2,14 +2,13 @@ import pickle
 import fileinput
 import pandas as pd
 import numpy as np
-import nltk
 from nltk.stem import WordNetLemmatizer
 
 import sklearn
 from sklearn.ensemble import * 
 from sklearn.feature_extraction.text import *
 
-nltk.download("wordnet")
+
 lemmatizer = WordNetLemmatizer()
 punctuation = "!?/[]{};:'\"\|-=_+,.<>()@#$%^&*"
 
@@ -39,14 +38,18 @@ def vectorize(inputs, vectorizer):
 
 
 def split(input, training, testing):
-    return sklearn.model_selection.train_test_split(input, test_size=float(testing), train_size=float(training))
+    return sklearn.model_selection.train_test_split(
+	input, 
+	test_size=float(testing), train_size=float(training))
 
 
 training, testing = split(summaries, 0.8, 0.1)
 
 vectorizer = CountVectorizer();
-classifier = BaggingClassifier();
+#classifier = BaggingClassifier();
 features = vectorize(summaries, vectorizer);
+
+classifier = model.load(model.default_save_filename)
 
 
 vectors_training = vectorizer.transform(training.text)

@@ -1,5 +1,5 @@
-source_files = main.py
-installation_files = model.pkl
+source_files = main.py model.py
+installation_files = model.pkl vectorizer.pkl
 
 .PHONY: build
 build: $(source_files:%=src/%) $(installation_files)

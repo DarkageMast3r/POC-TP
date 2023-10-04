@@ -1,12 +1,16 @@
-build:
+source_files = main.py
+installation_files = model.pkl
+
+.PHONY: build
+build: $(source_files:%=src/%) $(installation_files)
 	python3 src/main.py
 
+.PHONY: clean
 clean:
+	del $(installation_files)
 
+src/%.py:
+	$(error Missing file $@)
 
-install: src/install.py
+$(installation_files):
 	python3 src/install.py
-
-
-src/install.py:
-	$(error Installation file does not exist!)

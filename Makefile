@@ -8,6 +8,11 @@ build: $(source_files:%=src/%) $(installation_files)
 .PHONY: clean
 clean:
 	del $(installation_files)
+	
+.PHONY: install
+install: 
+	pip install -U scikit-learn
+	pip install pandas
 
 src/%.py:
 	$(error Missing file $@)

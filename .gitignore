@@ -3,3 +3,4 @@ vectorizer.pkl
 __pycache__
 *.un~~+
 *~
+*.swp

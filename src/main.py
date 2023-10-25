@@ -44,6 +44,8 @@ def print_screen(categories, email):
 
 categories = []
 categories_sorted = {}
+all_emails = []
+categorized = []
 
 def categorize_email(email, category): 
     try:
@@ -53,7 +55,14 @@ def categorize_email(email, category):
         return
 
     print("Learning...")
+    all_emails.append(email)
+    categorized.append(int(category)-1)
     vectors = model.vectorize([email], vectorizer)
+    data = {}
+    data["text"] = all_emails
+    data["category"] = categorized
+    dataframe = pd.DataFrame(data=data)
+    print(dataframe)
 
 
 def category_create(title):
@@ -65,8 +74,13 @@ def category_destroy(category):
         title = categories[int(category)-1]
         categories_sorted[title] = None
         categories.pop(category-1)
-    finally:
+    except:
         return
+    for email in email_categories:
+        if email_categories[email] >= int(category):
+            email_categories[email] -= 1
+        elif email_categories[email] == int(category)-1:
+            email_categories[email] = None
 
 
 

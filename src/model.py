@@ -8,24 +8,11 @@ import pickle
 default_save_filename = "model.pkl"
 
 
-def create(n_classes, n_features):
+def create(n_classes=0, n_features=0):
 #    dataframe = pd.DataFrame({"text": {}, "testoutput": {}})
     classifier = BaggingClassifier()
     return classifier
 
-
-def save(model, filename):
-    with open(filename, "wb") as file:
-        pickle.dump(model, file)
-
-def load(filename):
-    model = None
-    with open(filename, "rb") as file:
-        model = pickle.load(file)
-    return model
-
-def learn(model, data):
-    model.fit(data.text, data.category)
 
 
 
@@ -45,12 +32,13 @@ def sanitize(text):
     text = " ".join(vector)
     return text
 
+def sanitize_dataframe(inputs):
+    summaries_filtered = {}
+    for i in inputs.index:
+        text = inputs.text[i]
+        summaries_filtered[i] = sanitize(text)
+    inputs.update(pd.DataFrame({"text": summaries_filtered}))
 
 def vectorize(inputs, vectorizer):
-    summaries_filtered = {}
-    for i in range(len(inputs)):
-#        email = inputs[i]
-        inputs[i] = sanitize(inputs[i])
-#    inputs.update(pd.DataFrame({"text": summaries_filtered}))
 
-    return vectorizer.fit_transform(inputs);
+    return vectorizer.fit_transform(inputs.text);

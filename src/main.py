@@ -45,20 +45,25 @@ categories = []
 categories_sorted = {}
 
 def categorize_email(email, category):
-    title = categories[category]
-    categories_sorted[title].append(email)
-    print(categories_sorted)
-#    print(email, category)
+    try:
+        title = categories[int(category)-1]
+        categories_sorted[title].append(email)
+    finally:
+        # Train model!!!
+        return
 
 def category_create(title):
     categories_sorted[title] = []
     categories.append(title)
 
 def category_destroy(category):
-    title = categories[category-1]
-    categories_sorted[title] = None
-    categories.pop(category-1)
-    print(categories_sorted)
+    try:
+        title = categories[int(category)-1]
+        categories_sorted[title] = None
+        categories.pop(category-1)
+    finally:
+        return
+
 
 
 
@@ -68,10 +73,13 @@ for email in emails.text:
         selected = input("Select an action ")
         if selected == "1":
             print_screen(categories, email)
-            category = int(input("Place in folder "))
-            if (category <= len(categories)):
-                categorize_email(email, selected)
-                break; # Proceed to next email
+            try:
+                category = int(input("Place in folder "))
+                if (category <= len(categories)):
+                    categorize_email(email, category)
+                    break; # Proceed to next email
+            except:
+                selected = selected #omdat...
         elif selected == "2":
             print_screen(categories, email)
             name = (input("Create category "))

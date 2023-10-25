@@ -10,7 +10,7 @@ nltk.download("wordnet")
 classifier = model.create(n_classes = 5, n_features = 1)
 
 vectorizer = CountVectorizer()
-summaries = pd.read_csv("emails.csv")
+summaries = pd.read_csv("HilaryClintonEmails.csv")
 features = model.vectorize(summaries, vectorizer)
 vectors = vectorizer.transform(summaries.text)
 classifier.fit(vectors, summaries.spam)

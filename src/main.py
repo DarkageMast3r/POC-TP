@@ -20,7 +20,7 @@ print(vectorizer)
 classifier = model.load(model.default_save_filename)
 print(classifier)
 
-emails = pd.read_csv("emails.csv")
+emails = pd.read_csv("HilaryClintonEmails.csv")
 
 
 

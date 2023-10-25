@@ -48,9 +48,9 @@ def sanitize(text):
 
 def vectorize(inputs, vectorizer):
     summaries_filtered = {}
-    for i in inputs.index:
-        text = inputs.text[i]
-        summaries_filtered[i] = sanitize(text)
-    inputs.update(pd.DataFrame({"text": summaries_filtered}))
+    for i in range(len(inputs)):
+#        email = inputs[i]
+        inputs[i] = sanitize(inputs[i])
+#    inputs.update(pd.DataFrame({"text": summaries_filtered}))
 
-    return vectorizer.fit_transform(inputs.text);
+    return vectorizer.fit_transform(inputs);

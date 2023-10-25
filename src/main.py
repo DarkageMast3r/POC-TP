@@ -1,3 +1,4 @@
+from sklearn.feature_extraction.text import *
 import pickle
 import fileinput
 import pandas as pd
@@ -14,10 +15,10 @@ def split(input, training, testing):
     )
 
 
-vectorizer = model.load("vectorizer.pkl")
+vectorizer = CountVectorizer()
 print(vectorizer)
 
-classifier = model.load(model.default_save_filename)
+classifier = model.create(n_classes = 5, n_features = 1)
 print(classifier)
 
 emails = pd.read_csv("emails.csv")
@@ -44,13 +45,16 @@ def print_screen(categories, email):
 categories = []
 categories_sorted = {}
 
-def categorize_email(email, category):
+def categorize_email(email, category): 
     try:
         title = categories[int(category)-1]
         categories_sorted[title].append(email)
-    finally:
-        # Train model!!!
+    except:
         return
+
+    print("Learning...")
+    vectors = model.vectorize([email], vectorizer)
+
 
 def category_create(title):
     categories_sorted[title] = []
@@ -67,19 +71,23 @@ def category_destroy(category):
 
 
 
+category_create("Work")
+category_create("School")
+category_create("Spam")
 for email in emails.text:
     while True:
         print_screen(categories, email)
         selected = input("Select an action ")
         if selected == "1":
             print_screen(categories, email)
-            try:
-                category = int(input("Place in folder "))
-                if (category <= len(categories)):
-                    categorize_email(email, category)
-                    break; # Proceed to next email
-            except:
-                selected = selected #omdat...
+#            try:
+            category = int(input("Place in folder "))
+            if (category <= len(categories)):
+                categorize_email(email, category)
+                break; # Proceed to next email
+#            except:
+#                print("Failed to categorize")
+#                selected = selected #omdat...
         elif selected == "2":
             print_screen(categories, email)
             name = (input("Create category "))

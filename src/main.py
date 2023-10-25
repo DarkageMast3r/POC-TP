@@ -1,3 +1,4 @@
+from sklearn.feature_extraction.text import *
 import pickle
 import fileinput
 import pandas as pd
@@ -14,10 +15,10 @@ def split(input, training, testing):
     )
 
 
-vectorizer = model.load("vectorizer.pkl")
+vectorizer = CountVectorizer()
 print(vectorizer)
 
-classifier = model.load(model.default_save_filename)
+classifier = model.create(n_classes = 5, n_features = 1)
 print(classifier)
 
 emails = pd.read_csv("HilaryClintonEmails.csv")
@@ -40,71 +41,64 @@ def print_screen(categories, email):
 
     ui.draw()
 
-def categorize_email(email, category):
-    print(email, category)
+
+categories = []
+categories_sorted = {}
+
+def categorize_email(email, category): 
+    try:
+        title = categories[int(category)-1]
+        categories_sorted[title].append(email)
+    except:
+        return
+
+    print("Learning...")
+    vectors = model.vectorize([email], vectorizer)
 
 
-        
+def category_create(title):
+    categories_sorted[title] = []
+    categories.append(title)
+
+def category_destroy(category):
+    try:
+        title = categories[int(category)-1]
+        categories_sorted[title] = None
+        categories.pop(category-1)
+    finally:
+        return
 
 
 
-categories = ["Category 1", "Category 2", "abc", "def", "abcdefghijklmnopqrstuvwxyz"]
 
+category_create("Work")
+category_create("School")
+category_create("Spam")
 for email in emails.text:
     while True:
         print_screen(categories, email)
         selected = input("Select an action ")
         if selected == "1":
             print_screen(categories, email)
+#            try:
             category = int(input("Place in folder "))
             if (category <= len(categories)):
-                categorize_email(email, selected)
+                categorize_email(email, category)
                 break; # Proceed to next email
+#            except:
+#                print("Failed to categorize")
+#                selected = selected #omdat...
         elif selected == "2":
             print_screen(categories, email)
             name = (input("Create category "))
-            categories.append(name)
+            category_create(name)
+#            categories.append(name)
         elif selected == "3":
             print_screen(categories, email)
             category = int(input("Remove category "))
             if (category <= len(categories)):
-                categories.pop(int(category-1))
+                category_destroy(category)
+#                categories.pop(int(category-1))
 
-
-'''
-print("Enter a line >")
-for line in fileinput.input():
-    print(line)
-    vectors = vectorizer.transform(line)
-    print(vectors)
-    predicted = classifier.predict(vectors)
-    print(predicted)
-    print("Enter a line >")
-'''
 
 #model.save(classifier, model.default_save_filename)
-
-
-
-'''
-message = "> Enter an e-mail:"
-email = ""
-
-print(message)
-for line in fileinput.input():
-    if line == "\n":
-
-        try:
-            vector = vectorizer.transform([email])
-            predicted = classifier.predict(vector);
-            if predicted[0] == 0:
-                print("Not spam!")
-            else:
-                print("Spam.")
-        except:
-            print("Could not parse input!");
-        print(message)
-        email = "";
-    else:
-        email = email + line;
-'''

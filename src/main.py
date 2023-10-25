@@ -40,15 +40,27 @@ def print_screen(categories, email):
 
     ui.draw()
 
+
+categories = []
+categories_sorted = {}
+
 def categorize_email(email, category):
-    print(email, category)
+    title = categories[category]
+    categories_sorted[title].append(email)
+    print(categories_sorted)
+#    print(email, category)
+
+def category_create(title):
+    categories_sorted[title] = []
+    categories.append(title)
+
+def category_destroy(category):
+    title = categories[category-1]
+    categories_sorted[title] = None
+    categories.pop(category-1)
+    print(categories_sorted)
 
 
-        
-
-
-
-categories = ["Category 1", "Category 2", "abc", "def", "abcdefghijklmnopqrstuvwxyz"]
 
 for email in emails.text:
     while True:
@@ -63,48 +75,14 @@ for email in emails.text:
         elif selected == "2":
             print_screen(categories, email)
             name = (input("Create category "))
-            categories.append(name)
+            category_create(name)
+#            categories.append(name)
         elif selected == "3":
             print_screen(categories, email)
             category = int(input("Remove category "))
             if (category <= len(categories)):
-                categories.pop(int(category-1))
+                category_destroy(category)
+#                categories.pop(int(category-1))
 
-
-'''
-print("Enter a line >")
-for line in fileinput.input():
-    print(line)
-    vectors = vectorizer.transform(line)
-    print(vectors)
-    predicted = classifier.predict(vectors)
-    print(predicted)
-    print("Enter a line >")
-'''
 
 #model.save(classifier, model.default_save_filename)
-
-
-
-'''
-message = "> Enter an e-mail:"
-email = ""
-
-print(message)
-for line in fileinput.input():
-    if line == "\n":
-
-        try:
-            vector = vectorizer.transform([email])
-            predicted = classifier.predict(vector);
-            if predicted[0] == 0:
-                print("Not spam!")
-            else:
-                print("Spam.")
-        except:
-            print("Could not parse input!");
-        print(message)
-        email = "";
-    else:
-        email = email + line;
-'''

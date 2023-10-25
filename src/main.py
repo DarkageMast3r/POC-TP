@@ -21,7 +21,7 @@ print(vectorizer)
 classifier = model.create(n_classes = 5, n_features = 1)
 print(classifier)
 
-emails = pd.read_csv("emails.csv")
+emails = pd.read_csv("HilaryClintonEmails.csv")
 
 
 

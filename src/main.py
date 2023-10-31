@@ -22,7 +22,7 @@ print(vectorizer)
 classifier = model.create(n_classes = 5, n_features = 1)
 print(classifier)
 
-emails = pd.read_csv("news.csv")
+emails = pd.read_csv("emails.csv")
 
 
 
@@ -140,7 +140,7 @@ def print_screen(categories, email):
 #category_create("Work")
 #category_create("School")
 #category_create("Spam")
-for email in emails.text:
+for email in emails.Body:
     while True:
         print_screen(categories, email)
         selected = input("Select an action ")

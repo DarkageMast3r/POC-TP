@@ -2,6 +2,7 @@ from sklearn.datasets import *
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.ensemble import BaggingClassifier
 from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
 import pandas as pd
 import pickle
 
@@ -29,6 +30,9 @@ def sanitize(text):
     for j in range(len(vector)):
         vector[j] = lemmatizer.lemmatize(vector[j])
         
+    stop_words = set(stopwords.words('english'))  # or any other language
+    vector = [word for word in vector if word not in stop_words]
+
     text = " ".join(vector)
     return text
 

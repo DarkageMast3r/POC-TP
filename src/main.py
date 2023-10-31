@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import sklearn
 import ui
+import test
 
 import model
 
@@ -134,26 +135,39 @@ def print_screen(categories, email):
 
 
 
+
+def get_input(str):
+    (succes, val) = test.read()
+    if succes:
+        return val
+    return input(str)
+
+
+#test.write("2")
+#test.write("1")
+
 #category_create("Work")
 #category_create("School")
 #category_create("Spam")
-for email in emails.text:
+
+for i in range(len(emails.text)):
+    email = emails.text[i]
     while True:
         print_screen(categories, email)
-        selected = input("Select an action ")
+        selected = get_input("Select an action ")
         if selected == "1":
             print_screen(categories, email)
-            category = int(input("Place in folder "))
+            category = int(get_input("Place in folder "))
             if (category <= len(categories)):
                 categorize_email(email, category)
                 break; # Proceed to next email
         elif selected == "2":
             print_screen(categories, email)
-            name = (input("Create category "))
+            name = (get_input("Create category "))
             category_create(name)
 #            categories.append(name)
         elif selected == "3":
             print_screen(categories, email)
-            category = int(input("Remove category "))
+            category = int(get_input("Remove category "))
             if (category <= len(categories)):
                 category_destroy(category)

@@ -17,10 +17,7 @@ def split(input, training, testing):
 
 
 vectorizer = CountVectorizer()
-print(vectorizer)
-
 classifier = model.create(n_classes = 5, n_features = 1)
-print(classifier)
 
 emails = pd.read_csv("news.csv")
 

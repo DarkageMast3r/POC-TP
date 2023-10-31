@@ -6,6 +6,7 @@ import nltk
 import model
 
 nltk.download("wordnet")
+nltk.download("stopwords")
 
 #classifier = model.create(n_classes = 5, n_features = 1)
 

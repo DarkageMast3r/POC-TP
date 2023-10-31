@@ -9,6 +9,7 @@ build: $(source_files:%=src/%) $(installation_files)
 install: 
 	pip install -U scikit-learn
 	pip install pandas
+	python3 src/install.py
 
 src/%.py:
 	$(error Missing file $@)

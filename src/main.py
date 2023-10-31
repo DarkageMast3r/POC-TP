@@ -34,8 +34,8 @@ emails = pd.read_csv("emails.csv")
 
 vectorizers = [
     CountVectorizer,
-#    HashingVectorizer,
-#    TfidfVectorizer
+    HashingVectorizer,
+    TfidfVectorizer
 ]
 
 #(gamma=2, C=1, random_state=42),
@@ -123,6 +123,7 @@ def write_tests():
 
     x = test_num % len(vectorizers)
     y = int((test_num-x) / len(vectorizers))
+
     new_vectorizer = vectorizers[x]
     new_classifier = classifiers[y]
     vectorizer = new_vectorizer()

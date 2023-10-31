@@ -38,7 +38,7 @@ def clear():
     global height
     global screenbuffer
     size = os.get_terminal_size()
-    width = size.columns-1
+    width = size.columns-2
     height = size.lines-1
     screenbuffer = [[' ' for x in range(width)] for y in range(height)];
     set_bounds(0, 0, width, height)
@@ -51,11 +51,20 @@ def draw_string(x, y, wraplength, string):
     width = 0
     height = 0
     y_offset = 0
+    n = 0
     for i in range(len(string)):
-        x_cur = (i%wraplength)+x
-        y_cur = (i-(i%wraplength))/wraplength+y+y_offset
+        x_cur = (n%wraplength)+x
+        y_cur = (n-(n%wraplength))/wraplength+y+y_offset
+        n += 1
+        if n > wraplength:
+            n -= wraplength
+            y_offset += 1
         if string[i] == '\n':
             y_offset += 1
+            n = 0
+        elif string[i] == '\r':
+            n -= 1
+            continue
         else:
             draw_letter(int(x_cur), int(y_cur), string[i])
             if y_cur-y > height:

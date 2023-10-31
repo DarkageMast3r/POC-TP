@@ -137,23 +137,19 @@ def print_screen(categories, email):
 
 
 
-category_create("Work")
-category_create("School")
-category_create("Spam")
+#category_create("Work")
+#category_create("School")
+#category_create("Spam")
 for email in emails.text:
     while True:
         print_screen(categories, email)
         selected = input("Select an action ")
         if selected == "1":
             print_screen(categories, email)
-#            try:
             category = int(input("Place in folder "))
             if (category <= len(categories)):
                 categorize_email(email, category)
                 break; # Proceed to next email
-#            except:
-#                print("Failed to categorize")
-#                selected = selected #omdat...
         elif selected == "2":
             print_screen(categories, email)
             name = (input("Create category "))
@@ -164,7 +160,3 @@ for email in emails.text:
             category = int(input("Remove category "))
             if (category <= len(categories)):
                 category_destroy(category)
-#                categories.pop(int(category-1))
-
-
-#model.save(classifier, model.default_save_filename)

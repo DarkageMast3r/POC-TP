@@ -40,15 +40,18 @@ vectorizers = [
 
 #(gamma=2, C=1, random_state=42),
 
-new_classifier = None
-new_vectorizer = None
+new_classifier = BaggingClassifier
+new_vectorizer = CountVectorizer
 
 def newStackingClassifier():
-    return RandomForestClassifier(n_estimators=100)
+    return StackingClassifier()
 
 
 def newVotingClassifier():
     return VotingClassifier(estimators=100)
+
+def newMLPClassifier():
+    return MLPClassifier()
 
 
 
@@ -58,7 +61,7 @@ classifiers = [
     RidgeClassifierCV,
     SGDClassifier,
     SVC,
-    MLPClassifier,
+
     AdaBoostClassifier, 
     BaggingClassifier, 
     ExtraTreesClassifier, 
@@ -93,32 +96,10 @@ def write_tests():
     global new_vectorizer
     global new_classifier
     global test_num
-    test.create_category("Religion")
-    test.create_category("Politics")
-    test.create_category("Spam")
-    test.create_category("History")
-    test.create_category("Discussion")
-    test.categorize(1, False)
-    test.categorize(2, False)
-    test.categorize(3, False)
-    test.categorize(3, False)
-    test.categorize(2, False)
-    test.categorize(1, False)
-    test.categorize(1, False)
-    test.categorize(4, False)
-    test.categorize(2, False)
-    test.categorize(2, False)
-    test.skip()
-    test.categorize(2, False)
-    test.categorize(3, False)
-    test.categorize(3, False)
-    test.categorize(3, False)
-    test.categorize(5, True)
-    test.expect(3)
-    test.expect(2)
-    test.expect(2)
-    test.expect(5)
-    test.expect(2)
+
+
+
+
     
 
     x = test_num % len(vectorizers)
@@ -126,15 +107,89 @@ def write_tests():
 
     new_vectorizer = vectorizers[x]
     new_classifier = classifiers[y]
+
+    if new_vectorizer == CountVectorizer and new_classifier == newMLPClassifier:
+        test_num += 1
+        write_tests()
+        return
+
+
+
+
+    test.create_category("Unsorted")
+    test.create_category("Work")
+    test.create_category("Spam")
+
+    test.categorize(2, False)
+    test.categorize(2, False)
+    test.categorize(2, False)
+    test.categorize(1, False)
+    test.categorize(3, False)
+
+    test.categorize(3, False)
+    test.categorize(1, False)
+    test.categorize(1, False)
+    test.categorize(1, False)
+    test.categorize(3, False)
+
+    test.categorize(3, False)
+    test.categorize(2, False)
+    test.categorize(2, False)
+    test.categorize(3, False)
+    test.categorize(2, False)
+
+    test.categorize(2, False)
+
+    test.expect(2)
+    test.expect(2)
+    test.expect(1)
+    test.expect(3)
+    test.expect(3)
+
+    test.expect(2)
+    test.expect(1)
+    test.expect(2)
+    test.expect(3)
+    test.expect(2)
+
+    test.expect(3)
+    test.expect(2)
+    test.expect(3)
+    test.expect(2)
+    test.expect(2)
+
+    test.expect(3)
+    test.expect(3)
+    test.expect(2)
+    test.expect(2)
+    test.expect(2)
+
+    test.expect(2)
+    test.expect(3)
+    test.expect(2)
+    test.expect(3)
+    test.expect(3)
+
+    test.expect(2)
+    test.expect(3)
+    test.expect(2)
+    test.expect(1)
+    test.expect(2)
+
+
+
     vectorizer = new_vectorizer()
     classifier = new_classifier()
-    print(vectorizer, classifier)
+#    print(vectorizer, classifier)
     test_num += 1
 #    test.expect(
-    test.report_results()
-    test.reset()
+#    test.report_results()
+#    test.reset()
 
-write_tests()
+
+choice = input("Execute tests? (y/n)")
+if choice == "y":
+    write_tests()
 
 
 def reset():
@@ -258,7 +313,7 @@ def print_screen(categories, email):
         #        ui.set_bounds()
         ui.draw_string(21, ui.height-2, ui.width-22, "Predicted: "+categories[predicted])
 
-    ui.draw_categories(0, ui.height-15, 20, 15, ["Categorize", "New category", "Delete category", "Categorize quick", "skip", "reset", "expect"]);
+    ui.draw_categories(0, ui.height-15, 20, 15, ["Categorize", "New category", "Delete category"])
 
     ui.draw()
 
